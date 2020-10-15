@@ -208,7 +208,7 @@ type awsSigningAuthPlugin struct {
 }
 
 func (ap *awsSigningAuthPlugin) awsCredentialService() awsCredentialService {
-	if ap.AWSEnvironmentCredentials != nil {
+	if ap.AWSEnvironmentCredentials != nil && ap.AWSEnvironmentCredentials.enabled {
 		return ap.AWSEnvironmentCredentials
 	}
 	return ap.AWSMetadataCredentials

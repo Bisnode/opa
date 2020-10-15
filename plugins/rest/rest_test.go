@@ -120,6 +120,30 @@ func TestNew(t *testing.T) {
 				"url": "http://localhost",
 				"credentials": {
 					"s3_signing": {
+						"environment_credentials": true
+					}
+				}
+			}`,
+		},
+		{
+			input: `{
+				"name": "foo",
+				"url": "http://localhost",
+				"credentials": {
+					"s3_signing": {
+						"environment_credentials": {
+							"ignored": true
+						}
+					}
+				}
+			}`,
+		},
+		{
+			input: `{
+				"name": "foo",
+				"url": "http://localhost",
+				"credentials": {
+					"s3_signing": {
 						"metadata_credentials": {
 							"aws_region": "us-east-1",
 							"iam_role": "my_iam_role"

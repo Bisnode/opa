@@ -53,7 +53,28 @@ type awsCredentialService interface {
 }
 
 // awsEnvironmentCredentialService represents an environment-variable credential provider for AWS
-type awsEnvironmentCredentialService struct{}
+type awsEnvironmentCredentialService struct{
+	enabled bool
+}
+
+func (cs *awsEnvironmentCredentialService) UnmarshalJSON(b []byte) error {
+	var v interface{}
+	if err := json.Unmarshal(b, &v); err != nil {
+		return err
+	}
+	switch v := v.(type) {
+	case bool:
+		cs.enabled = v
+	case map[string]interface{}:
+		if len(v) == 0 {
+			cs.enabled = true
+		}
+	default:
+		return fmt.Errorf("cannot unmarshal object credentials.s3_signing.environment_credentials of type %v", v)
+	}
+
+	return nil
+}
 
 func (cs *awsEnvironmentCredentialService) credentials() (awsCredentials, error) {
 	var creds awsCredentials
